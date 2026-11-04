@@ -11,7 +11,7 @@ spec:
       chart: ./chart/channel-web
       reconcileStrategy: Revision
       sourceRef: { kind: GitRepository, name: channel-web, namespace: flux-system }
-      valuesFiles: [./environments/dev.yaml]
+      valuesFiles: [./chart/channel-web/values.yaml, ./environments/dev.yaml]   # the chart's values.yaml is not included by default
   values:
     image:
       repository: ghcr.io/cards-pilot-estate/channel-web

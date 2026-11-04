@@ -1,0 +1,18 @@
+# sim-comms otp-service in comms-dev. Promote by changing image.tag in a pull request. The secret
+# otp-service-secrets is created once by `make secrets ENV=dev` in sim-comms (never in Git).
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata: { name: otp-service, namespace: comms-dev }
+spec:
+  interval: 10m
+  releaseName: otp-service
+  chart:
+    spec:
+      chart: ./chart/otp-service
+      reconcileStrategy: Revision
+      sourceRef: { kind: GitRepository, name: sim-comms, namespace: flux-system }
+      valuesFiles: [./environments/dev.yaml]
+  values:
+    image:
+      repository: ghcr.io/cards-pilot-estate/otp-service
+      tag: 4c120f40996f715bbcd2ff336af38a9ab4425170

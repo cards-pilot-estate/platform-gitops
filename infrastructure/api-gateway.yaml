@@ -1,0 +1,15 @@
+# The Gateway, routes and policies (api-gateway repo, chart/api-gateway). Adopts release `api-gateway`.
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata: { name: api-gateway, namespace: api-gateway }
+spec:
+  dependsOn:
+    - { name: eg, namespace: envoy-gateway-system }
+  interval: 10m
+  releaseName: api-gateway
+  chart:
+    spec:
+      chart: ./chart/api-gateway
+      reconcileStrategy: Revision
+      sourceRef: { kind: GitRepository, name: api-gateway, namespace: flux-system }
+      valuesFiles: [./environments/kind.yaml]

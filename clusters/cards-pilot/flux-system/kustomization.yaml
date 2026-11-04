@@ -1,0 +1,23 @@
+# Flux v2.10.0 (vendored release manifest) with only the four controllers this estate uses; the image
+# automation controllers and source-watcher are removed to save memory on the laptop VM.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - gotk-components.yaml
+  - gotk-sync.yaml
+patches:
+  - patch: |
+      $patch: delete
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata: { name: image-automation-controller, namespace: flux-system }
+  - patch: |
+      $patch: delete
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata: { name: image-reflector-controller, namespace: flux-system }
+  - patch: |
+      $patch: delete
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata: { name: source-watcher, namespace: flux-system }

@@ -15,4 +15,4 @@ spec:
   values:
     image:
       repository: ghcr.io/cards-pilot-estate/otp-service
-      tag: 4c120f40996f715bbcd2ff336af38a9ab4425170
+      tag: 696559ce222233e213ce773527c8a01023ce48ce

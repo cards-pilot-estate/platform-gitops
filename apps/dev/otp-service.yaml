@@ -11,7 +11,7 @@ spec:
       chart: ./chart/otp-service
       reconcileStrategy: Revision
       sourceRef: { kind: GitRepository, name: sim-comms, namespace: flux-system }
-      valuesFiles: [./environments/dev.yaml]
+      valuesFiles: [./chart/otp-service/values.yaml, ./environments/dev.yaml]   # the chart's values.yaml is not included by default
   values:
     image:
       repository: ghcr.io/cards-pilot-estate/otp-service

@@ -12,4 +12,4 @@ spec:
       chart: ./chart/api-gateway
       reconcileStrategy: Revision
       sourceRef: { kind: GitRepository, name: api-gateway, namespace: flux-system }
-      valuesFiles: [./environments/kind.yaml]
+      valuesFiles: [./chart/api-gateway/values.yaml, ./environments/kind.yaml]   # the chart's values.yaml is not included by default

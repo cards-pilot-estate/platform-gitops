@@ -1,0 +1,41 @@
+# Where charts come from. The team repositories are public; dev follows their main branch for
+# charts, and images are pinned per environment in apps/<env>.
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata: { name: api-gateway, namespace: flux-system }
+spec:
+  interval: 5m
+  url: https://github.com/cards-pilot-estate/api-gateway
+  ref: { branch: main }
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata: { name: sim-comms, namespace: flux-system }
+spec:
+  interval: 5m
+  url: https://github.com/cards-pilot-estate/sim-comms
+  ref: { branch: main }
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata: { name: channel-web, namespace: flux-system }
+spec:
+  interval: 5m
+  url: https://github.com/cards-pilot-estate/channel-web
+  ref: { branch: main }
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata: { name: envoyproxy, namespace: flux-system }
+spec:
+  type: oci
+  interval: 1h
+  url: oci://docker.io/envoyproxy
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata: { name: jetstack, namespace: flux-system }
+spec:
+  type: oci
+  interval: 1h
+  url: oci://quay.io/jetstack/charts

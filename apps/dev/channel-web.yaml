@@ -1,0 +1,18 @@
+# channel-web in channels-dev. Promote by changing image.tag in a pull request. The secret
+# channel-web-secrets is created once by `make secrets ENV=dev` in channel-web (never in Git).
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata: { name: channel-web, namespace: channels-dev }
+spec:
+  interval: 10m
+  releaseName: channel-web
+  chart:
+    spec:
+      chart: ./chart/channel-web
+      reconcileStrategy: Revision
+      sourceRef: { kind: GitRepository, name: channel-web, namespace: flux-system }
+      valuesFiles: [./environments/dev.yaml]
+  values:
+    image:
+      repository: ghcr.io/cards-pilot-estate/channel-web
+      tag: b2faba46065cd9d531f35f529fde05e9f7ddecfc

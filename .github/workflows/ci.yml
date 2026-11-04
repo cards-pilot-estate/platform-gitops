@@ -1,0 +1,34 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Kustomize build and schema
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Tools
+        run: |
+          curl -sSL https://github.com/yannh/kubeconform/releases/download/v0.7.0/kubeconform-linux-amd64.tar.gz | tar xz
+      - name: Build every kustomization
+        run: |
+          for k in clusters/cards-pilot/flux-system infrastructure apps/dev; do
+            kubectl kustomize "$k" > "/tmp/$(echo $k | tr / -).yaml"
+          done
+      - name: Validate against Kubernetes and Flux schemas
+        run: |
+          ./kubeconform -strict -summary -ignore-missing-schemas \
+            -schema-location default \
+            -schema-location 'https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/{{.Group}}/{{.ResourceKind}}_{{.ResourceAPIVersion}}.json' \
+            /tmp/infrastructure.yaml /tmp/apps-dev.yaml clusters/cards-pilot/*.yaml
+      - name: Images are pinned by commit
+        run: |
+          if grep -nE 'tag: *(latest|main)\b' apps/*/*.yaml; then echo "pin images by commit sha"; exit 1; fi

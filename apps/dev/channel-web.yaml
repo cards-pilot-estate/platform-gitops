@@ -15,4 +15,4 @@ spec:
   values:
     image:
       repository: ghcr.io/cards-pilot-estate/channel-web
-      tag: b2faba46065cd9d531f35f529fde05e9f7ddecfc
+      tag: 1fc24bd656753148bb09ab2212cdb641219e59b1

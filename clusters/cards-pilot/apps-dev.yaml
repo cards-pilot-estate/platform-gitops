@@ -7,6 +7,7 @@ metadata:
 spec:
   dependsOn:
     - name: infrastructure
+    - name: infrastructure-kind   # channel-web's certificate comes from the local CA
   interval: 10m
   path: ./apps/dev
   prune: true

@@ -1,0 +1,40 @@
+# A local certificate authority for *.localtest.me (WG.06, ruling R15). A self-signed issuer makes the
+# CA certificate once; the CA issuer then signs every Ingress certificate. Trust the CA on the laptop
+# with `make tls-trust` in the platform repository; in the cloud, Let's Encrypt replaces it (DEC-18).
+# Moved here from the platform repository (card-onboarding-platform#129, ADR-0022): Flux is the only
+# owner of cert-manager and its issuers. Never pruned: deleting the Certificate would mint a new CA
+# and every browser that trusts the old one would refuse the web host.
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: selfsigned-bootstrap
+  annotations: { kustomize.toolkit.fluxcd.io/prune: disabled }
+spec:
+  selfSigned: {}
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: cards-local-ca
+  namespace: cert-manager
+  annotations: { kustomize.toolkit.fluxcd.io/prune: disabled }
+spec:
+  isCA: true
+  commonName: cards-pilot local CA
+  secretName: cards-local-ca
+  duration: 87600h      # 10 years: a laptop CA
+  privateKey:
+    algorithm: ECDSA
+    size: 256
+  issuerRef:
+    name: selfsigned-bootstrap
+    kind: ClusterIssuer
+---
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: cards-local-ca
+  annotations: { kustomize.toolkit.fluxcd.io/prune: disabled }
+spec:
+  ca:
+    secretName: cards-local-ca

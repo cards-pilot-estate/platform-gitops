@@ -1,5 +1,5 @@
-# Adopts the release `make tls` installed (same name and namespace). The local CA issuers stay in the
-# platform repo (deploy/tls/local-ca.yaml) until the cluster's TLS moves here.
+# Flux is the only installer of cert-manager (card-onboarding-platform#129, ADR-0022). It adopted the release
+# `make tls` used to install (same name and namespace); the local CA lives in infrastructure/kind/.
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata: { name: cert-manager, namespace: cert-manager }

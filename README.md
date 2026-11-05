@@ -10,6 +10,8 @@ What runs in each cluster of the card onboarding estate, declared in Git and app
 | `clusters/cards-pilot/infrastructure.yaml` | Kustomization `infrastructure` → `./infrastructure` |
 | `clusters/cards-pilot/apps-dev.yaml` | Kustomization `apps-dev` → `./apps/dev`, after `infrastructure` |
 | `infrastructure/` | Sources (the team repos, the chart registries), cert-manager, the Envoy Gateway controller, the API gateway (routes and policies) |
+| `clusters/cards-pilot/infrastructure-kind.yaml` | Kustomization `infrastructure-kind` → `./infrastructure/kind`, after `infrastructure` |
+| `infrastructure/kind/` | The laptop's local CA: `selfsigned-bootstrap`, the CA Certificate `cards-local-ca` and its ClusterIssuer (never pruned) |
 | `apps/dev/` | otp-service (comms-dev) and channel-web (channels-dev), images pinned by commit |
 
 The releases keep the names `make` installed them with (`eg`, `api-gateway`, `cert-manager`, `otp-service`, `channel-web`), so Flux adopted them in place.
